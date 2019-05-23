@@ -1,0 +1,22 @@
+<div class="card" *ngIf="comment">
+  <div class="card-header d-flex flex-row">
+    <div class="flex-fill d-flex align-items-center">
+      <p class="m-0">{{ comment.title}}</p>
+    </div>
+    <div>
+      <span
+        class="badge mr-3"
+        [class.badge-danger]="comment.type === 'high'"
+        [class.badge-warning]="comment.type === 'medium'"
+        [class.badge-secondary]="comment.type === 'low'"
+        >
+        {{ comment.type }}
+      </span>
+      <small>{{ comment.createdAt | date: 'short' }}</small>
+      <button class="btn btn-sm btn-danger mx-3" (click)="onDeleteComment(comment.id)">Delete comment</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <p class="m-0">{{ comment.content }}</p>
+  </div>
+</div>

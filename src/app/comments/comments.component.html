@@ -1,0 +1,42 @@
+
+<form [formGroup]="newCommentForm" (ngSubmit)="onFormSubmit(comment)">
+  <div class="form-group animated fadeIn">
+    <input type="text" formControlName="title" placeholder="Comment Title" class="form-control mb-3 text-truncate" />
+    <textarea type="text" formControlName="content" placeholder="Write a comment" class="form-control mb-3 text-truncate" ></textarea>
+    <input type="hidden" formControlName="createdAt" value="new Date()">
+    <select required formControlName="type" class="custom-select form-control mb-3 text-truncate" [value]="'medium'">
+      <option value="{{ type }}" *ngFor="let type of commentTypes">{{ type }}</option>
+    </select>
+    <button type="submit" [disabled]="!newCommentForm.valid"class="btn btn-primary">Add Comment</button>
+  </div>
+</form>
+
+<div>
+  <div *ngIf="comments.length > 0" class="py-3 border-bottom mb-3">
+    Sort comments by
+    <div class="form-check form-check-inline" *ngFor="let sort of sortOptions">
+      <input class="form-check-input"type="radio" id="{{sort.value}}" [(ngModel)]="sortOrder" name="list_name" value="{{ sort.value }}" (change)="onSortChange(sort.value)">
+      <label class="form-check-label" for="{{sort.value}}">{{ sort.name }}</label>
+    </div>
+  </div>
+
+  <div *ngFor="let comment of comments" (click)="onSelectComment(comment)" class="card mb-3 animated fadeIn">
+    <div class="card-header d-flex flex-row align-items-center">
+      <a routerLink="{{comment.id}}" class="flex-fill d-block">
+        {{ comment.title}}
+      </a>
+      <div>
+        <span
+          class="badge mr-3"
+          [class.badge-danger]="comment.type === 'high'"
+          [class.badge-warning]="comment.type === 'medium'"
+          [class.badge-secondary]="comment.type === 'low'"
+        >{{ comment.type }}</span>
+        <small>{{ comment.createdAt | date: 'short' }}</small>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="m-0">{{ comment.content }}</p>
+    </div>
+  </div>
+</div>
